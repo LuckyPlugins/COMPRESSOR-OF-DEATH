@@ -34,7 +34,9 @@ private:
 };
 
 //==============================================================================
-class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor
+// FIX: Added private juce::Timer inheritance
+class AudioPluginAudioProcessorEditor : public juce::AudioProcessorEditor,
+                                        private juce::Timer
 {
 public:
     explicit AudioPluginAudioProcessorEditor(AudioPluginAudioProcessor&);
@@ -44,6 +46,9 @@ public:
     void resized() override;
 
 private:
+    // FIX: Added timerCallback override declaration
+    void timerCallback() override;
+
     AudioPluginAudioProcessor& processorRef;
 
     // Parameter attachments

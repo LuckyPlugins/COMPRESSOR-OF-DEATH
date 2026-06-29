@@ -122,8 +122,8 @@ void AudioPluginAudioProcessor::prepareToPlay(double sampleRate,
 
     // Initialize envelope follower
     envelope = 0.0f;
-    previousIntensity = *intensityParam;
-    previousOutputGain = juce::Decibels::decibelsToGain(*outputGainParam);
+    previousIntensity = intensityParam->load();
+    previousOutputGain = juce::Decibels::decibelsToGain(outputGainParam->load());
 
     // DC blocker states
     dcBlockerStateL = 0.0f;
@@ -177,9 +177,9 @@ void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer,
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 
-    // Get current parameter values
-    float intensity = juce::jlimit(0.0f, 1.0f, *intensityParam);
-    float outputGainDb = *outputGainParam;
+    // Get current parameter values - FIX: use .load() on atomic pointers
+    float intensity = juce::jlimit(0.0f, 1.0f, intensityParam->load());
+    float outputGainDb = outputGainParam->load();
     float outputGain = juce::Decibels::decibelsToGain(outputGainDb);
 
     // === HELLISH COMPRESSOR DSP ===

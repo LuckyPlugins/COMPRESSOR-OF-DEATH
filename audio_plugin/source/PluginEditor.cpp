@@ -389,6 +389,7 @@ void AudioPluginAudioProcessorEditor::resized()
     outputGainLabel.setBounds(getWidth() - 80, 275, 70, 20);
 }
 
+// FIX: timerCallback implementation with correct member name
 void AudioPluginAudioProcessorEditor::timerCallback()
 {
     // Trigger repaint for animation
